@@ -13,7 +13,7 @@ export default async ({ req, res, log, error }) => {
   // You can log messages to the console
   log("Hello, Logs!");
 
-  await fetch("https://kitco-gcdn-prod.stellate.sh/", {
+  const kitco = fetch("https://kitco-gcdn-prod.stellate.sh/", {
     headers: {
       accept: "*/*",
       "accept-language": "en,ru;q=0.9,en-US;q=0.8,ka;q=0.7",
@@ -36,7 +36,7 @@ export default async ({ req, res, log, error }) => {
     method: "POST",
     mode: "cors",
     credentials: "omit",
-  }).then((res) => log(res));
+  });
 
   // If something goes wrong, log an error
   error("Hello, Errors!");
@@ -48,11 +48,12 @@ export default async ({ req, res, log, error }) => {
     return res.send("Hello, World!");
   }
 
+  log(kitco);
   // `res.json()` is a handy helper for sending JSON
-  return res.json({
-    motto: "Build like a team of hundreds_",
-    learn: "https://appwrite.io/docs",
-    connect: "https://appwrite.io/discord",
-    getInspired: "https://builtwith.appwrite.io",
-  });
+  // return res.json({
+  //   motto: "Build like a team of hundreds_",
+  //   learn: "https://appwrite.io/docs",
+  //   connect: "https://appwrite.io/discord",
+  //   getInspired: "https://builtwith.appwrite.io",
+  // });
 };
