@@ -36,7 +36,7 @@ export default async ({ req, res, log, error }) => {
     method: "POST",
     mode: "cors",
     credentials: "omit",
-  }).then((res) => console.log(res));
+  }).then((res) => log(res));
 
   // If something goes wrong, log an error
   error("Hello, Errors!");
