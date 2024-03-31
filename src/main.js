@@ -43,7 +43,6 @@ export default async ({ req, res, log, error }) => {
     return res.send("Hello, World!");
   }
 
-  log(kitco);
   // `res.json()` is a handy helper for sending JSON
   // return res.json({
   //   motto: "Build like a team of hundreds_",
