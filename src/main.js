@@ -28,7 +28,10 @@ export default async ({ req, res, log, error }) => {
     redirect: "follow",
   };
 
-  fetch("https://kitco-gcdn-prod.stellate.sh/", requestOptions)
+  const rame = await fetch(
+    "https://kitco-gcdn-prod.stellate.sh/",
+    requestOptions
+  )
     .then((response) => response.text())
     .then((result) => console.log(result))
     .catch((error) => console.error(error));
@@ -40,6 +43,7 @@ export default async ({ req, res, log, error }) => {
   if (req.method === "GET") {
     // Send a response with the res object helpers
     // `res.send()` dispatches a string back to the client
+    res.send(rame);
     return res.send("Hello, World!");
   }
 
