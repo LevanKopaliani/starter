@@ -13,30 +13,25 @@ export default async ({ req, res, log, error }) => {
   // You can log messages to the console
   log("Hello, Logs!");
 
-  const kitco = fetch("https://kitco-gcdn-prod.stellate.sh/", {
-    headers: {
-      accept: "*/*",
-      "accept-language": "en,ru;q=0.9,en-US;q=0.8,ka;q=0.7",
-      "cache-control": "no-cache",
-      "content-type": "application/json",
-      pragma: "no-cache",
-      "sec-ch-ua":
-        '"Google Chrome";v="123", "Not:A-Brand";v="8", "Chromium";v="123"',
-      "sec-ch-ua-mobile": "?0",
-      "sec-ch-ua-platform": '"Windows"',
-      "sec-fetch-dest": "empty",
-      "sec-fetch-mode": "cors",
-      "sec-fetch-site": "cross-site",
-      "x-query-id":
-        '{"query":"MetalFragment","variables":{"timestamp":1711814610,"currency":"USD"}}',
-    },
-    referrer: "https://www.kitco.com/",
-    referrerPolicy: "strict-origin-when-cross-origin",
-    body: '{"query":"fragment MetalFragment on Metal { ID symbol currency name results { ...MetalQuoteFragment } } fragment MetalQuoteFragment on Quote { ID timestamp high low open close ask bid mid originalTime change changePercentage unit } query AllMetalsQuote($currency: String!, $timestamp: Int) { gold: GetMetalQuote( symbol: \\"AU\\" timestamp: $timestamp currency: $currency ) { ...MetalFragment } silver: GetMetalQuote( symbol: \\"AG\\" timestamp: $timestamp currency: $currency ) { ...MetalFragment } platinum: GetMetalQuote( symbol: \\"PT\\" timestamp: $timestamp currency: $currency ) { ...MetalFragment } palladium: GetMetalQuote( symbol: \\"PD\\" timestamp: $timestamp currency: $currency ) { ...MetalFragment } rhodium: GetMetalQuote( symbol: \\"RH\\" timestamp: $timestamp currency: $currency ) { ...MetalFragment } }","variables":{"timestamp":1711814610,"currency":"USD"}}',
-    method: "POST",
-    mode: "cors",
-    credentials: "omit",
+  const myHeaders = new Headers();
+  myHeaders.append("Content-Type", "application/json");
+
+  const graphql = JSON.stringify({
+    query:
+      'fragment MetalFragment on Metal { ID symbol currency name results { ...MetalQuoteFragment } } fragment MetalQuoteFragment on Quote { ID timestamp high low open close ask bid mid originalTime change changePercentage unit } query AllMetalsQuote($currency: String!, $timestamp: Int) { gold: GetMetalQuote( symbol: "AU" timestamp: $timestamp currency: $currency ) { ...MetalFragment } silver: GetMetalQuote( symbol: "AG" timestamp: $timestamp currency: $currency ) { ...MetalFragment } platinum: GetMetalQuote( symbol: "PT" timestamp: $timestamp currency: $currency ) { ...MetalFragment } palladium: GetMetalQuote( symbol: "PD" timestamp: $timestamp currency: $currency ) { ...MetalFragment } rhodium: GetMetalQuote( symbol: "RH" timestamp: $timestamp currency: $currency ) { ...MetalFragment } }',
+    variables: { currency: "USD", unit: "GRAMM" },
   });
+  const requestOptions = {
+    method: "POST",
+    headers: myHeaders,
+    body: graphql,
+    redirect: "follow",
+  };
+
+  fetch("https://kitco-gcdn-prod.stellate.sh/", requestOptions)
+    .then((response) => response.text())
+    .then((result) => console.log(result))
+    .catch((error) => console.error(error));
 
   // If something goes wrong, log an error
   error("Hello, Errors!");
